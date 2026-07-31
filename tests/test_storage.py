@@ -1,8 +1,11 @@
+from pathlib import Path
+
 from src.storage import ExpenseStore
 
 
-def test_new_store_creates_an_empty_json_file(tmp_path) -> None:
-    data_file = tmp_path / "nested" / "expenses.json"
+# Leave data/expenses.json untouched and verify that a new store starts empty.
+def test_new_store_creates_an_empty_json_file(test_directory: Path) -> None:
+    data_file = test_directory / "nested" / "expenses.json"
 
     store = ExpenseStore(data_file)
 
