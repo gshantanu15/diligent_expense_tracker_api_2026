@@ -29,7 +29,7 @@ class ExpenseCreate(BaseModel):
     """The fields a client supplies when creating an expense."""
 
     title: str
-    amount: float = Field(gt=0)
+    amount: float = Field(gt=0)  # greater than 0
     category: Category
     date: date
 
@@ -38,5 +38,11 @@ class ExpenseCreate(BaseModel):
     def title_must_not_be_blank(cls, title: str) -> str:
         cleaned_title = title.strip()
         if not cleaned_title:
-            raise ValueError("title must not be blank")
+            raise ValueError("Title must not be blank!")
         return cleaned_title
+
+
+class TotalResponse(BaseModel):
+    """The total amount returned by the totals endpoint."""
+
+    total: float

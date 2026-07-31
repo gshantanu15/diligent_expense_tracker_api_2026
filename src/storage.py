@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from src.models import Expense, ExpenseCreate
+from src.models import Category, Expense, ExpenseCreate
 
 
 class ExpenseStore:
@@ -16,13 +16,26 @@ class ExpenseStore:
         if not self.file_path.exists():
             self.file_path.write_text("[]", encoding="utf-8")
 
-    def list_expenses(self) -> list[Expense]:
+    def list_expenses(
+        self,
+        category: Category | None = None,
+    ) -> list[Expense]:
         raw_expenses = json.loads(self.file_path.read_text(encoding="utf-8"))
-        return [Expense.model_validate(expense) for expense in raw_expenses]
+        expenses = [
+            Expense.model_validate(expense) for expense in raw_expenses
+        ]
+        if category is None:
+            return expenses
+        return [
+            expense for expense in expenses if expense.category == category
+        ]
 
     def add_expense(self, expense_data: ExpenseCreate) -> Expense:
         expenses = self.list_expenses()
+
+        # Generate a new ID with a basic auto-increment strategy.
         next_id = max((expense.id for expense in expenses), default=0) + 1
+
         expense = Expense(id=next_id, **expense_data.model_dump())
         expenses.append(expense)
         self._write_expenses(expenses)
@@ -35,4 +48,12 @@ class ExpenseStore:
         self.file_path.write_text(
             json.dumps(serializable_expenses, indent=2),
             encoding="utf-8",
+        )
+
+    def calculate_total(
+        self,
+        category: Category | None = None,
+    ) -> float:
+        return sum(
+            expense.amount for expense in self.list_expenses(category)
         )
