@@ -17,7 +17,12 @@ def test_directory() -> Iterator[Path]:
 
 # Set up the API without a real server and keep its data out of expenses.json.
 @pytest.fixture
-def client(test_directory: Path) -> Iterator[TestClient]:
-    app = create_app(test_directory / "expenses.json")
+def data_file(test_directory: Path) -> Path:
+    return test_directory / "expenses.json"
+
+
+@pytest.fixture
+def client(data_file: Path) -> Iterator[TestClient]:
+    app = create_app(data_file)
     with TestClient(app) as test_client:
         yield test_client
