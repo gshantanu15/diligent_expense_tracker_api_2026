@@ -37,7 +37,7 @@ terminal, and confirm that `requirements.txt` is visible before continuing.
 **Every command below should be run from this project root unless stated
 otherwise.**
 
-<details open>
+<details>
 <summary><strong>Option 1 — Local Python 3.12</strong></summary>
 
 ### Requirements
@@ -194,7 +194,11 @@ Dates use the ISO `YYYY-MM-DD` format, and amounts must be greater than zero.
 
 Invalid request data returns `422`. Deleting an unknown ID returns `404`.
 
-### Example
+<details>
+<summary><strong>Examples</strong></summary>
+
+### Examples
+
 
 First start the API using either option above. Keep that terminal running and
 enter these commands in a second terminal.
@@ -236,6 +240,8 @@ curl -X DELETE http://127.0.0.1:8000/expenses/1
 
 On Windows PowerShell, use `curl.exe` instead of `curl` if `curl` is mapped to
 `Invoke-WebRequest`.
+
+</details>
 
 ## Tests
 
