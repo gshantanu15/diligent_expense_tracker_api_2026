@@ -57,3 +57,14 @@ class ExpenseStore:
         return sum(
             expense.amount for expense in self.list_expenses(category)
         )
+
+    def delete_expense(self, expense_id: int) -> bool:
+        expenses = self.list_expenses()
+        remaining_expenses = [
+            expense for expense in expenses if expense.id != expense_id
+        ]
+        if len(remaining_expenses) == len(expenses):
+            return False
+
+        self._write_expenses(remaining_expenses)
+        return True

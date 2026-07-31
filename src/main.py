@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException, Request, Response, status
 
 from src.models import Category, Expense, ExpenseCreate, TotalResponse
 from src.storage import ExpenseStore
@@ -35,6 +35,19 @@ def create_app(data_file: Path = DEFAULT_DATA_FILE) -> FastAPI:
     ) -> TotalResponse:
         total = request.app.state.expense_store.calculate_total(category)
         return TotalResponse(total=total)
+
+    @app.delete(
+        "/expenses/{expense_id}",
+        status_code=status.HTTP_204_NO_CONTENT,
+    )
+    def delete_expense(expense_id: int, request: Request) -> Response:
+        deleted = request.app.state.expense_store.delete_expense(expense_id)
+        if not deleted:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Expense not found",
+            )
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     return app
 
