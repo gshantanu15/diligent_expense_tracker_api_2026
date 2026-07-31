@@ -12,6 +12,7 @@ suite.
 - Calculate overall or category-specific totals.
 - Delete an expense.
 - Run locally with Python or in Docker.
+- FastAPI already includes an interactive Swagger UI at `/docs` endpoint. (can also be used for testing the API)
 
 ## Install, Run, and Test
 
@@ -66,8 +67,8 @@ macOS installers.
 Windows PowerShell:
 
 ```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
+py -3.12 -m venv .venv # creates virtual environment
+.\.venv\Scripts\Activate.ps1 # starts virtual environment
 ```
 
 macOS or Linux:
@@ -98,6 +99,7 @@ Leave this terminal open while using the API. Open a second terminal for the
 example requests below. Stop the server at any time by pressing `Ctrl+C`.
 
 Run the tests:
+> ⚠️ **Note:** If you used a Virtual Environment, tests must be run from a terminal where the environment is activated. You can do this by starting a new terminal in the project root and running the activation command again.
 
 ```bash
 python -m pytest
@@ -113,7 +115,7 @@ the project root.
 <details>
 <summary><strong>Option 2 — Docker</strong></summary>
 
-### Requirements
+### Requirements (Prerequisites)
 
 - Docker Desktop or Docker Engine
 
@@ -193,6 +195,8 @@ Dates use the ISO `YYYY-MM-DD` format, and amounts must be greater than zero.
 | `DELETE` | `/expenses/{id}` | Delete an expense | `204` |
 
 Invalid request data returns `422`. Deleting an unknown ID returns `404`.
+
+The requests made can be monitored in the terminal where the server is running.
 
 <details>
 <summary><strong>Examples</strong></summary>
