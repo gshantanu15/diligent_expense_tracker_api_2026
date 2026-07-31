@@ -1,4 +1,4 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.12-slim-bookworm AS base
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
@@ -9,6 +9,17 @@ COPY requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY src ./src
+
+
+FROM base AS test
+
+COPY pytest.ini .
+COPY tests ./tests
+
+CMD ["python", "-m", "pytest"]
+
+
+FROM base AS runtime
 
 EXPOSE 8000
 
